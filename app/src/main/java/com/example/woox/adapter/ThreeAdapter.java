@@ -20,10 +20,12 @@ public class ThreeAdapter extends DelegateAdapter.Adapter {
     private Context context;
     private LayoutHelper layoutHelper;
     private ArrayList<BanBean.DataBean.ChannelBean> channel;    //上一个组件是否加载出来
-    public ThreeAdapter(Context context, LayoutHelper layoutHelper, ArrayList<BanBean.DataBean.ChannelBean> channel) {
+    private String name;    //修改，复用
+    public ThreeAdapter(Context context, LayoutHelper layoutHelper, ArrayList<BanBean.DataBean.ChannelBean> channel,String name) {
         this.context = context;
         this.layoutHelper = layoutHelper;
         this.channel=channel;
+        this.name=name;
     }
 
     @Override
@@ -41,7 +43,7 @@ public class ThreeAdapter extends DelegateAdapter.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         VhThree vhThree= (VhThree) holder;
-        vhThree.biaohang.setText("品牌制造商");
+        vhThree.biaohang.setText(name);
     }
 
     @Override
