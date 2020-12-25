@@ -44,8 +44,7 @@ public class EightAdapter extends DelegateAdapter.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        VhEight vhEight= (VhEight) holder;
-
+            VhEight vhEight= (VhEight) holder;
             BanBean.DataBean.HotGoodsListBean goodsListBean = hotGoodsList.get(position);
             vhEight.name.setText(goodsListBean.getName());
             vhEight.jies.setText(goodsListBean.getGoods_brief());

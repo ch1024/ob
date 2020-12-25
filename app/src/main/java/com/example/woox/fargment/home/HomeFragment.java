@@ -14,10 +14,12 @@ import com.alibaba.android.vlayout.layout.SingleLayoutHelper;
 import com.example.mvp.base.BaseFragment;
 import com.example.woox.R;
 import com.example.woox.adapter.EightAdapter;
+import com.example.woox.adapter.EventAdapter;
 import com.example.woox.adapter.FiveAdapter;
 import com.example.woox.adapter.OneAdapter;
 import com.example.woox.adapter.ForeAdapter;
 import com.example.woox.adapter.SixAdapter;
+import com.example.woox.adapter.TenAdapter;
 import com.example.woox.adapter.ThreeAdapter;
 import com.example.woox.adapter.TwoAdapter;
 import com.example.woox.adapter.TwoColumnAdapter;
@@ -47,6 +49,11 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements Contrac
     private ArrayList<BanBean.DataBean.HotGoodsListBean> mHot;
     private EightAdapter eightAdapter;
     private ThreeAdapter nineAdapter;
+    private ArrayList<BanBean.DataBean.TopicListBean> mTopic;
+    private TenAdapter tenAdapter;
+    private ThreeAdapter evenAdapter;
+    private ArrayList<BanBean.DataBean.CategoryListBean> mCateg;
+    private EventAdapter eventAdapter;
 
     //网格上面文字
     @Override
@@ -67,6 +74,10 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements Contrac
         mGoods = new ArrayList<>();
         //人气推荐
         mHot = new ArrayList<>();
+        //专题精选
+        mTopic = new ArrayList<>();
+        //家具复用
+        mCateg = new ArrayList<>();
     }
 
     @Override
@@ -101,12 +112,33 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements Contrac
         mNine();
         //第十个，滑动
         mTen();
+        //第十一个，居家标题
+//        mEven();
+        //第十二个，居家要复用，要嵌套，外加标题
+        mEvenJu();
         addAdapter();
         presenter.getBan();
     }
 
-    private void mTen() {
+    private void mEvenJu() {        //用线性helper
+        LinearLayoutHelper layoutHer = new LinearLayoutHelper();
 
+        eventAdapter = new EventAdapter(getActivity(), layoutHer, mCateg);
+    }
+
+    private void mEven() {
+        SingleLayoutHelper singleLayoutHelper = new SingleLayoutHelper();
+        singleLayoutHelper.setItemCount(1);
+        singleLayoutHelper.setAspectRatio(6);
+        singleLayoutHelper.setMarginTop(6);
+        String name="居家";
+        evenAdapter = new ThreeAdapter(getActivity(), singleLayoutHelper, mChanne, name);
+    }
+
+    private void mTen() {   //里面需一个组件rec,然后横向滑动，互相不影响
+        SingleLayoutHelper singleLayoutHelper = new SingleLayoutHelper();
+        singleLayoutHelper.setItemCount(1);
+        tenAdapter = new TenAdapter(getActivity(), singleLayoutHelper, mTopic);
     }
 
     private void mNine() {
@@ -122,7 +154,6 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements Contrac
         LinearLayoutHelper layoutHelper = new LinearLayoutHelper();
         layoutHelper.setItemCount(3);
         eightAdapter = new EightAdapter(getActivity(), layoutHelper, mHot);
-
     }
 
     private void mServen() {        //人气推荐
@@ -192,6 +223,9 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements Contrac
         adapter.addAdapter(servenAdapter);
         adapter.addAdapter(eightAdapter);
         adapter.addAdapter(nineAdapter);
+        adapter.addAdapter(tenAdapter);
+//        adapter.addAdapter(evenAdapter);      //复用了，注释掉
+        adapter.addAdapter(eventAdapter);
         big_rec.setLayoutManager(layoutManager);
         big_rec.setAdapter(adapter);
     }
@@ -235,6 +269,16 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements Contrac
                 eightAdapter.notifyDataSetChanged();
             }
             nineAdapter.notifyDataSetChanged();
+
+            List<BanBean.DataBean.TopicListBean> topicList = banBean.getData().getTopicList();
+            mTopic.addAll(topicList);
+            tenAdapter.notifyDataSetChanged();
+
+//            evenAdapter.notifyDataSetChanged();
+            List<BanBean.DataBean.CategoryListBean> categoryList = banBean.getData().getCategoryList();
+            mCateg.addAll(categoryList);
+            eventAdapter.notifyDataSetChanged();
+
         }
     }
 }

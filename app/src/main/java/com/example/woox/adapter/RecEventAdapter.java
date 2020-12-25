@@ -16,11 +16,11 @@ import com.example.woox.bean.BanBean;
 
 import java.util.ArrayList;
 
-public class RecSpecialAdapter extends RecyclerView.Adapter {
+public class RecEventAdapter extends RecyclerView.Adapter {
     Context context;
-    ArrayList<BanBean.DataBean.TopicListBean> listBeans;
+    ArrayList<BanBean.DataBean.CategoryListBean.GoodsListBean> listBeans;
 
-    public RecSpecialAdapter(Context context, ArrayList<BanBean.DataBean.TopicListBean> listBeans) {
+    public RecEventAdapter(Context context, ArrayList<BanBean.DataBean.CategoryListBean.GoodsListBean> listBeans) {
         this.context = context;
         this.listBeans = listBeans;
     }
@@ -28,18 +28,17 @@ public class RecSpecialAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.special_item, parent, false);
-        return new VhReSp(view);
+        View view = LayoutInflater.from(context).inflate(R.layout.event_item, parent, false);
+        return new VhReEv(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        VhReSp vhReSp= (VhReSp) holder;
-        BanBean.DataBean.TopicListBean topicListBean = listBeans.get(position);
-        vhReSp.name.setText(topicListBean.getTitle());
-        vhReSp.price.setText("￥"+topicListBean.getPrice_info()+"起");
-        vhReSp.jiex.setText(topicListBean.getSubtitle());
-        Glide.with(context).load(topicListBean.getItem_pic_url()).into(vhReSp.img);
+        VhReEv vhReEv= (VhReEv) holder;
+        BanBean.DataBean.CategoryListBean.GoodsListBean bean = listBeans.get(position);
+        vhReEv.name.setText(bean.getName());
+        vhReEv.price.setText("￥"+bean.getRetail_price());
+        Glide.with(context).load(bean.getList_pic_url()).into(vhReEv.img);
     }
 
     @Override
@@ -50,18 +49,15 @@ public class RecSpecialAdapter extends RecyclerView.Adapter {
             return 0;
         }
     }
-    class VhReSp extends RecyclerView.ViewHolder {
+    class VhReEv extends RecyclerView.ViewHolder {
         ImageView img;
         TextView name;
         TextView price;
-        TextView jiex;
-        public VhReSp(@NonNull View itemView) {
+        public VhReEv(@NonNull View itemView) {
             super(itemView);
-            img=itemView.findViewById(R.id.special_item_img);
-            name=itemView.findViewById(R.id.special_item_name);
-            price=itemView.findViewById(R.id.special_item_price);
-            jiex=itemView.findViewById(R.id.special_item_jiex);
-
+            img=itemView.findViewById(R.id.event_item_img);
+            name=itemView.findViewById(R.id.event_item_name);
+            price=itemView.findViewById(R.id.event_item_price);
         }
     }
 }
